@@ -16,8 +16,22 @@ namespace uva
             wxString m_border_radius;
             wxString m_title;
         public:
-            basic_button(wxWindow* parent, wxWindowID id, const wxString& title, const wxString& border_radius = "border_radius", const wxString& foreground = "foreground", const wxString& background = "background", const wxString& shadow = "shadow");
+            basic_button(wxWindow* parent, wxWindowID id, const wxString& title, const var& styles = empty_map);
         }; // class button
+
+        class primary_button : public basic_button
+        { 
+        public:
+            primary_button(wxWindow* parent, wxWindowID id, const wxString& title)
+                : basic_button(parent, id, title, {
+                    { "foreground", "white" },
+                    { "foreground", "primary-color" },
+                    { "foreground", "primary-color-darker" },
+                })
+            {
+
+            }
+        };
         
     }; // namespace wx
     

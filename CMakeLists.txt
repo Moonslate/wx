@@ -41,6 +41,8 @@ endif()
 
 add_library(uva-wx
 	${CMAKE_CURRENT_LIST_DIR}/src/style.cpp
+	${CMAKE_CURRENT_LIST_DIR}/src/basic_button.cpp
+	${CMAKE_CURRENT_LIST_DIR}/src/wx.cpp
 )
 
 target_link_libraries(uva-wx ${wxWidgets_LIBRARIES})

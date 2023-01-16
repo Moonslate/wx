@@ -14,9 +14,9 @@ namespace uva
     {
         namespace style
         {
-            void set_stylesheet(const std::map<wxString, var>& palette);
-            var& get_style(const wxString& index);
-            void set_style(const wxString& index, const var& style);
+            void set_stylesheet(const std::map<std::string, var>& palette);
+            var& get_style(const std::string& index);
+            void set_style(const std::string& index, const var& style);
         };
     }; // namespace wx
     
