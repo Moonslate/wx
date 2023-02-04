@@ -16,7 +16,7 @@ namespace uva
             wxString m_border_radius;
             wxString m_title;
         public:
-            basic_button(wxWindow* parent, wxWindowID id, const wxString& title, const var& styles = empty_map);
+            basic_button(wxWindow* parent, wxWindowID id, const wxString& title, std::map<var, var>&& __styles);
         }; // class button
 
         class primary_button : public basic_button
@@ -25,8 +25,8 @@ namespace uva
             primary_button(wxWindow* parent, wxWindowID id, const wxString& title)
                 : basic_button(parent, id, title, {
                     { "foreground", "white" },
-                    { "foreground", "primary-color" },
-                    { "foreground", "primary-color-darker" },
+                    { "background", "primary-color" },
+                    { "shadow",     "primary-color-darker" },
                 })
             {
 

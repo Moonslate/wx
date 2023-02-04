@@ -5,6 +5,7 @@ using namespace uva;
 static std::map<std::string, var> s_stylesheet = {
     { "foreground",     color(0, 0, 0) },
     { "background",     color(255, 255, 255) },
+    { "white",          color(255, 255, 255) },
     { "shadow",         color(128, 128, 128) },
     { "border_radius",  0                    },
     { "border_radius",  0                    },
