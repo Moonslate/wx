@@ -40,8 +40,9 @@ else()
 endif()
 
 add_library(uva-wx
-	${CMAKE_CURRENT_LIST_DIR}/src/style.cpp
 	${CMAKE_CURRENT_LIST_DIR}/src/basic_button.cpp
+	${CMAKE_CURRENT_LIST_DIR}/src/bitmap.cpp
+	${CMAKE_CURRENT_LIST_DIR}/src/style.cpp
 	${CMAKE_CURRENT_LIST_DIR}/src/wx.cpp
 )
 

@@ -1,4 +1,7 @@
 #include <wx/wx.h>
+
+#include <bitmap.hpp>
+
 #include <core.hpp>
 #include <color.hpp>
 
