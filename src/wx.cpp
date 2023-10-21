@@ -2,8 +2,8 @@
 
 wxString uva::wx::to_wxstring(const var &v)
 {
-    if(v.type == var::var_type::string) {
-        return wxString(v.as<var::var_type::string>().c_str(), wxMBConvUTF8(), v.as<var::var_type::string>().size());
+    if(v.is_a<var::string>()) {
+        return wxString(v.as<var::string>().c_str(), wxMBConvUTF8(), v.as<var::string>().size());
     }
 
     return v.to_s();
