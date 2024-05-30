@@ -1,7 +1,21 @@
-#include <bitmap.hpp>
 #include <wx/rawbmp.h>
 
-void uva::wx::bitmap::for_each_pixel(wxBitmap& bitmap, void(*f)(const uva::color&, void*), void* data) {
+#include <uva/image.hpp>
+#include <uva/wx/bitmap.hpp>
+
+void uva::wx::bitmap::for_each_pixel(wxBitmap& bitmap, void(*f)(uva::color&, void*), void* data) {
+    if(bitmap.GetDepth() != 32)
+    {
+        bitmap.UseAlpha(true);
+        bitmap.ResetAlpha();
+    }
+
+    if(bitmap.GetDepth() != 32)
+    {
+        wxMessageBox(L"Error: cannot convert tile palette to 32 bits", L"Warning", wxICON_ERROR);
+        return;
+    }
+
     wxAlphaPixelData rgba_data(bitmap);
     wxAlphaPixelData::Iterator it = rgba_data.GetPixels();
 
@@ -13,6 +27,10 @@ void uva::wx::bitmap::for_each_pixel(wxBitmap& bitmap, void(*f)(const uva::color
         {
             uva::color c(it.Red(), it.Green(), it.Blue(), it.Alpha());
             f(c, data);
+            it.Red()   = c.r;
+            it.Green() = c.g;
+            it.Blue()  = c.b;
+            it.Alpha() = c.a;
         }
 
         it = row_start;
@@ -22,8 +40,7 @@ void uva::wx::bitmap::for_each_pixel(wxBitmap& bitmap, void(*f)(const uva::color
 
 uva::image uva::wx::bitmap::to_image(wxBitmap& bitmap)
 {
-    uva::image image;
-    image.create({bitmap.GetWidth(),bitmap.GetHeight()});
+    uva::image image({bitmap.GetWidth(),bitmap.GetHeight()});
 
     struct image_iterator {
         uva::color* colors;
@@ -32,7 +49,7 @@ uva::image uva::wx::bitmap::to_image(wxBitmap& bitmap)
 
     image_iterator it = { image.data(), 0 };
 
-    uva::wx::bitmap::for_each_pixel(bitmap, [](const uva::color& c, void* data) {
+    uva::wx::bitmap::for_each_pixel(bitmap, [](uva::color& c, void* data) {
         image_iterator* self = (image_iterator*)data;
         self->colors[self->index] = c;
         ++(self->index);
@@ -41,41 +58,36 @@ uva::image uva::wx::bitmap::to_image(wxBitmap& bitmap)
     return image;
 }
 
-wxBitmap uva::wx::bitmap::to_image(uva::image& image)
+wxBitmap uva::wx::bitmap::to_bitmap(const uva::image& image)
 {
-    wxBitmap bitmap(image.getWidth(), image.getHeight(), 32);
+    wxBitmap bitmap(image.width(), image.height(), 32);
 
-    // struct image_iterator {
-    //     uva::color* colors;
-    //     size_t index;
-    // };
+    struct image_iterator {
+        uva::color* colors;
+        size_t index;
+    } it;
 
-    // image_iterator it = { image.data(), 0 };
+    it.colors = image.data();
+    it.index = 0;
 
-    // uva::wx::bitmap::for_each_pixel(bitmap, [](const uva::color& c, void* data) {
-    //     image_iterator* self = (image_iterator*)data;
-    //     self->colors[self->index] = c;
-    //     ++(self->index);
-    // }, &it);
+    uva::wx::bitmap::for_each_pixel(bitmap, [](uva::color& pixel, void* data) {
+        image_iterator* it = (image_iterator*)data;
+        uva::color* c = it->colors + it->index;
+
+        pixel.r = c->r;
+        pixel.g = c->g;
+        pixel.b = c->b;
+        pixel.a = c->a;
+
+        it->index++;
+    }, &it);
 
     return bitmap;
 }
 
-uva::drawing::palette uva::wx::bitmap::extract_colors(wxBitmap& bitmap)
+void uva::wx::bitmap::clear(wxBitmap &bitmap, uva::color color)
 {
-    uva::drawing::palette colors;
-
-    struct image_iterator {
-        uva::drawing::palette* palette;
-    };
-
-    image_iterator it = { &colors };
-
-    uva::wx::bitmap::for_each_pixel(bitmap, [](const uva::color& c, void* data) {
-        image_iterator* it = (image_iterator*)data;
-
-        it->palette->push(c);
-    }, &it);
-
-    return colors;
+    uva::wx::bitmap::for_each_pixel(bitmap, [](uva::color& pixel, void* data) {
+        pixel = *(uva::color*)data;
+    }, &color);
 }

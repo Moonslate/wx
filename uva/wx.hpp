@@ -1,9 +1,8 @@
 #include <wx/wx.h>
 
-#include <bitmap.hpp>
-
-#include <core.hpp>
-#include <color.hpp>
+#include <uva/wx/bitmap.hpp>
+#include <uva/color.hpp>
+#include <uva/core.hpp>
 
 namespace uva
 {
@@ -11,6 +10,7 @@ namespace uva
     {
         wxString to_wxstring(const var& v);
         wxColour to_wxcolour(const color& c);
+        wxSize   to_wxsize(const uva::size& s);
     }; // namespace wx
     
-}; // namespace uva
+}; // namespace uvaw

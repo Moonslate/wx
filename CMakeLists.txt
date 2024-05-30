@@ -30,7 +30,6 @@ if(WIN32)
 	# Group ALL_BUILD and ZERO_CHECK in one folder
 	set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 	# Set user-tracking as the startup project
-	set_property (DIRECTORY PROPERTY VS_STARTUP_PROJECT "user-tracking")
 	# Disable these annoying warnings
 	add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 else()
@@ -40,10 +39,8 @@ else()
 endif()
 
 add_library(uva-wx
-	${CMAKE_CURRENT_LIST_DIR}/src/basic_button.cpp
-	${CMAKE_CURRENT_LIST_DIR}/src/bitmap.cpp
-	${CMAKE_CURRENT_LIST_DIR}/src/style.cpp
 	${CMAKE_CURRENT_LIST_DIR}/src/wx.cpp
+	${CMAKE_CURRENT_LIST_DIR}/src/bitmap.cpp
 )
 
 target_link_libraries(uva-wx ${wxWidgets_LIBRARIES})

@@ -1,4 +1,4 @@
-#include "wx.hpp"
+#include <uva/wx.hpp>
 
 wxString uva::wx::to_wxstring(const var &v)
 {
@@ -12,4 +12,9 @@ wxString uva::wx::to_wxstring(const var &v)
 wxColour uva::wx::to_wxcolour(const color &c)
 {
     return wxColour(c.r, c.g, c.b, c.a);
+}
+
+wxSize uva::wx::to_wxsize(const uva::size &s)
+{
+    return wxSize(s.w, s.h);
 }
