@@ -63,7 +63,7 @@ wxBitmap uva::wx::bitmap::to_bitmap(const uva::image& image)
     wxBitmap bitmap(image.width(), image.height(), 32);
 
     struct image_iterator {
-        uva::color* colors;
+        const uva::color* colors;
         size_t index;
     } it;
 
@@ -72,7 +72,7 @@ wxBitmap uva::wx::bitmap::to_bitmap(const uva::image& image)
 
     uva::wx::bitmap::for_each_pixel(bitmap, [](uva::color& pixel, void* data) {
         image_iterator* it = (image_iterator*)data;
-        uva::color* c = it->colors + it->index;
+        const uva::color* c = it->colors + it->index;
 
         pixel.r = c->r;
         pixel.g = c->g;
